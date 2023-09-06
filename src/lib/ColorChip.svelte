@@ -45,7 +45,7 @@
       {color.to("srgb").toString({ format: "hex" })}
     </div>
     <div class="col-2 is-vertical-align">
-      {#if color.hsv.h < 50 && color.hsv.h < 120}
+      {#if color.hsv.h > 10 && color.hsv.h < 30 && color.hsv.s > 20 && color.hsv.s < 75 && color.hsv.s > 27 && color.hsv.s < 80}
         <div class="button seoncdary">Skin Tone?</div>
       {/if}
     </div>
