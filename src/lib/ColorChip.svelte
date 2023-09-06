@@ -32,12 +32,13 @@
       })}
       <br />
 
-      {color.to("srgb").toString({
+      {color.to("hsv").toString({
         format: {
           name: "HSV",
-          coords: ["<number>[0, 179]", "<number>[0, 255]", "<number>[0, 255]"],
+          coords: ["<number>", "<number>", "<number>"],
         },
       })}
+      <!-- {color.to("hsv").toString()} -->
       <br />
       {color.to("srgb").toString({ format: "hex" })}
     </div>
@@ -45,7 +46,7 @@
     {#if color.hsv.h < 50 && color.hsv.h < 120}
       <div class="text-right col">Skin Tone?</div>
     {/if}
-    {color.contrastWCAG21("white")}
+    {color.contrastWCAG21("white").toFixed(2)}
     {#if color.contrastWCAG21("white") < 4.5}
       <div class="text-right col">Legibility Fail</div>
     {/if}
