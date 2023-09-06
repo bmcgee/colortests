@@ -44,8 +44,8 @@
     img
       .decode()
       .then(() => {
-        palette.createPalette(img, 10);
-        secondPalette.createPalette(img, 10);
+        palette.createPalette(img, 6);
+        secondPalette.createPalette(img, 6);
         loaded = true;
       })
       .catch((encodingError) => {

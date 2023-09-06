@@ -24,7 +24,7 @@
   style="--color: {color.toString()}"
 >
   <div class="row">
-    <div class="col col-1 is-left text-left">{index}</div>
+    <div class="col col-1 is-left text-left">{index + 1}</div>
     <div class="text-left float-left col">
       {color.to("srgb").toString({
         format: {
