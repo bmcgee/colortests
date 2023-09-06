@@ -8,7 +8,7 @@
   let palette = new ColorPalette();
   let secondPalette = new ColorPalette();
 
-  let token = "url";
+  let token = "token";
 
   let url =
     "Music125/v4/fd/fd/8c/fdfd8c26-b8f9-4768-41d3-b24773250c65/886446605814.jpg";

@@ -1,5 +1,6 @@
 <script>
   export let color;
+  export let index;
 
   let skintone = false;
   let illegal = false;
@@ -23,7 +24,8 @@
   style="--color: {color.toString()}"
 >
   <div class="row">
-    <div class="text-left col-6">
+    <div class="col col-1 is-left text-left">{index}</div>
+    <div class="text-left float-left col">
       {color.to("srgb").toString({
         format: {
           name: "RGB",
@@ -42,14 +44,22 @@
       <br />
       {color.to("srgb").toString({ format: "hex" })}
     </div>
-
-    {#if color.hsv.h < 50 && color.hsv.h < 120}
-      <div class="text-right col">Skin Tone?</div>
-    {/if}
-    {color.contrastWCAG21("white").toFixed(2)}
-    {#if color.contrastWCAG21("white") < 4.5}
-      <div class="text-right col">Legibility Fail</div>
-    {/if}
+    <div class="col-2 is-vertical-align">
+      {#if color.hsv.h < 50 && color.hsv.h < 120}
+        <div class="button seoncdary">Skin Tone?</div>
+      {/if}
+    </div>
+    <div class="col is-right">
+      {#if color.contrastWCAG21("white") < 4.5}
+        <div class="button error">
+          {color.contrastWCAG21("white").toFixed(1)}
+        </div>
+      {:else if color.contrastWCAG21("white") >= 4.5}
+        <div class="button success">
+          {color.contrastWCAG21("white").toFixed(1)}
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
 

@@ -8,9 +8,9 @@
   let noGood = false;
 </script>
 
-{#each palette.colors as color}
+{#each palette.colors as color, index}
   <div class="row">
-    <ColorChip {color} />
+    <ColorChip {color} {index} />
   </div>
 {/each}
 
