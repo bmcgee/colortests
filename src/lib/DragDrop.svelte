@@ -47,7 +47,12 @@
   }
 
   function handleClick() {
-    url = "https://is1-ssl.mzstatic.com/image/thumb/" + token + "/300x300.png";
+    if (!token.startsWith("http")) {
+      url =
+        "https://is1-ssl.mzstatic.com/image/thumb/" + token + "/300x300.png";
+    } else {
+      url = token;
+    }
     displayImage.src = url;
     console.log(url);
 
@@ -63,7 +68,6 @@
         palette.createPalette(img, 6);
         secondPalette.createPalette(img, 6);
         sortedPalettes = sortPalette(palette);
-        console.log(sortedPalettes);
         loaded = true;
       })
       .catch((encodingError) => {
@@ -90,11 +94,13 @@
 
 <div class="container" id="image and controls">
   <div class="row">
-    <div class="col">
+    <div class="col-3">
       <img bind:this={displayImage} src="" />
     </div>
     {#if loaded}
-      <Controls bind:saturationValue bind:brightnessValue bind:hueValue />
+      <div class="col">
+        <Controls bind:saturationValue bind:brightnessValue bind:hueValue />
+      </div>
     {/if}
   </div>
 </div>

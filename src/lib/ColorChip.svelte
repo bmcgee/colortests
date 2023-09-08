@@ -3,8 +3,6 @@
   export let index;
   export let flags;
   import { skintone, contrast } from "./colortests";
-
-  $: console.log(color.contrastWCAG21("white") < 4.5);
 </script>
 
 <div
