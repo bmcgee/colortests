@@ -63,8 +63,8 @@
     img
       .decode()
       .then(() => {
-        palette.createPalette(img, 6);
-        secondPalette.createPalette(img, 6);
+        palette.createPalette(img, 10);
+        secondPalette.createPalette(img, 10);
         sortedPalettes = sortPalette(palette);
         loaded = true;
       })
