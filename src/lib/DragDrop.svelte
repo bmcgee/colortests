@@ -84,19 +84,17 @@
 </script>
 
 <div class="container" id="loader">
-  <div class="row is-full-width">
-    <input class="col is-full-width" bind:value={token} />
-    <button class="col is-full-width" on:click={handleClick}> Load </button>
+  <div class="row">
+    <input class="col" bind:value={token} />
+    <button class="col" on:click={handleClick}> Load </button>
   </div>
 </div>
 
 <div class="container" id="image and controls">
   <div class="row">
-    <div class="col-3">
-      <img bind:this={displayImage} src="" />
-    </div>
+    <img class="col-4" bind:this={displayImage} src="" />
     {#if loaded}
-      <div class="col">
+      <div class="col-6 clearfix float-right">
         <Controls bind:saturationValue bind:brightnessValue bind:hueValue />
       </div>
     {/if}
@@ -105,7 +103,7 @@
 
 {#if loaded}
   <div class="container" id="palettes">
-    <div class="row is-full-width col-12">
+    <div class="row bubba">
       <div class="col-3">
         <p class="text-left">Color Thief Palette:</p>
         <hr />
