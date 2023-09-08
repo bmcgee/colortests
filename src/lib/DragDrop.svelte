@@ -16,8 +16,7 @@
   let token =
     "Features125/v4/0e/10/96/0e10963d-8c5d-f176-3651-796ec44d0c97/mzl.kdlmyecx.jpg";
 
-  let url =
-    "Music125/v4/fd/fd/8c/fdfd8c26-b8f9-4768-41d3-b24773250c65/886446605814.jpg";
+  let url;
   let loaded = false;
   let displayImage;
 
@@ -47,14 +46,13 @@
   }
 
   function handleClick() {
-    if (!token.startsWith("http")) {
+    if (token.startsWith("http")) {
+      url = token;
+    } else {
       url =
         "https://is1-ssl.mzstatic.com/image/thumb/" + token + "/300x300.png";
-    } else {
-      url = token;
     }
     displayImage.src = url;
-    console.log(url);
 
     // palette = palette.fill();
     // secondPalette = secondPalette.fill();
