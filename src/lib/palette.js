@@ -33,7 +33,6 @@ class ColorPalette {
       console.log(this.colors[index].hsv.v);
       this.colors[index].hsv.s *= saturationValue;
     });
-    return null;
   }
 
   callName() {

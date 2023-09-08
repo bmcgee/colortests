@@ -1,21 +1,27 @@
 <script>
+  import Controls from "./Controls.svelte";
+
   import ColorThief from "colorthief";
   import PaletteDisplay from "./PaletteDisplay.svelte";
   import { ColorPalette } from "./palette";
+  import { sortPalette } from "./colortests";
   const colorThief = new ColorThief();
+  import { mid, dark } from "./colortests";
 
   let upImage, fileinput;
   let palette = new ColorPalette();
   let secondPalette = new ColorPalette();
+  let sortedPalettes = [];
 
-  let token = "token";
+  let token =
+    "Features125/v4/0e/10/96/0e10963d-8c5d-f176-3651-796ec44d0c97/mzl.kdlmyecx.jpg";
 
   let url =
     "Music125/v4/fd/fd/8c/fdfd8c26-b8f9-4768-41d3-b24773250c65/886446605814.jpg";
   let loaded = false;
   let displayImage;
 
-  let hueValue;
+  let hueValue = 0;
   let saturationValue = 1;
   let brightnessValue = 1;
 
@@ -33,10 +39,20 @@
     secondPalette = secondPalette;
   }
 
+  function hue(hueValue) {
+    palette.colors.forEach((color, i) => {
+      secondPalette.colors[i].hsv.h = palette.colors[i].hsv.h + hueValue;
+    });
+    secondPalette = secondPalette;
+  }
+
   function handleClick() {
     url = "https://is1-ssl.mzstatic.com/image/thumb/" + token + "/300x300.png";
     displayImage.src = url;
     console.log(url);
+
+    // palette = palette.fill();
+    // secondPalette = secondPalette.fill();
 
     const img = new Image();
     img.src = url;
@@ -46,15 +62,23 @@
       .then(() => {
         palette.createPalette(img, 6);
         secondPalette.createPalette(img, 6);
+        sortedPalettes = sortPalette(palette);
+        console.log(sortedPalettes);
         loaded = true;
       })
       .catch((encodingError) => {
         console.log(encodingError);
       });
-  }
 
+    //Sort Palettes
+    sortedPalettes = sortPalette(secondPalette);
+  }
+  $: hue(hueValue);
+  $: sortedPalettes = sortPalette(secondPalette);
   $: sat(saturationValue);
+  $: sortedPalettes = sortPalette(secondPalette);
   $: bright(brightnessValue);
+  $: sortedPalettes = sortPalette(secondPalette);
 </script>
 
 <div class="container" id="loader">
@@ -70,32 +94,7 @@
       <img bind:this={displayImage} src="" />
     </div>
     {#if loaded}
-      <div class="col">
-        <div class="container" id="controls">
-          <div class="row">
-            <label for="saturation">Saturation [{saturationValue}]:</label>
-            <input
-              id="saturation"
-              type="range"
-              bind:value={saturationValue}
-              min="0"
-              max="3"
-              step="0.01"
-            />
-          </div>
-          <div class="row">
-            <label for="bright">Brightness [{brightnessValue}]:</label>
-            <input
-              id="bright"
-              type="range"
-              bind:value={brightnessValue}
-              min="0"
-              max="3"
-              step="0.01"
-            />
-          </div>
-        </div>
-      </div>
+      <Controls bind:saturationValue bind:brightnessValue bind:hueValue />
     {/if}
   </div>
 </div>
@@ -103,11 +102,31 @@
 {#if loaded}
   <div class="container" id="palettes">
     <div class="row is-full-width col-12">
-      <div class="col">
-        <PaletteDisplay {palette} />
+      <div class="col-3">
+        <p class="text-left">Color Thief Palette:</p>
+        <hr />
+        <PaletteDisplay {palette} flags={false} />
       </div>
       <div class="col">
-        <PaletteDisplay palette={secondPalette} />
+        <p class="text-left">Acceptable:</p>
+        <hr />
+        <PaletteDisplay palette={sortedPalettes[2]} />
+        <p class="text-left">Low Contrast:</p>
+        <hr />
+        <PaletteDisplay palette={sortedPalettes[1]} />
+        <p class="text-left">Skintone?</p>
+        <hr />
+        <PaletteDisplay palette={sortedPalettes[0]} />
+      </div>
+      <div class="col-3">
+        <p class="text-left">Midtone</p>
+        <hr />
+        <PaletteDisplay palette={mid(sortedPalettes[2])} flags={false} />
+      </div>
+      <div class="col-3">
+        <p class="text-left">Dark</p>
+        <hr />
+        <PaletteDisplay palette={dark(sortedPalettes[2])} flags={false} />
       </div>
     </div>
   </div>

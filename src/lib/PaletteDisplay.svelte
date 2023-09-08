@@ -2,6 +2,7 @@
   import ColorChip from "./ColorChip.svelte";
 
   export let palette;
+  export let flags = true;
 
   import { wcagContrast, formatCss, formatHex } from "culori";
 
@@ -10,7 +11,7 @@
 
 {#each palette.colors as color, index}
   <div class="row">
-    <ColorChip {color} {index} />
+    <ColorChip {color} {index} {flags} />
   </div>
 {/each}
 
