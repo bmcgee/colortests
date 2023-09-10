@@ -3,11 +3,7 @@
   export let brightnessValue = 1;
   export let hueValue = 0;
 
-  function handleClick() {
-    hueValue = 0;
-    saturationValue = 1;
-    brightnessValue = 1;
-  }
+  export function handleClick() {}
 </script>
 
 <div class="container" id="controls">
@@ -37,9 +33,9 @@
       id="saturation"
       type="range"
       bind:value={saturationValue}
-      min="0"
-      max="3"
-      step="0.01"
+      min="-100"
+      max="100"
+      step="1"
     />
   </div>
   <div class="row">
@@ -50,12 +46,11 @@
       id="bright"
       type="range"
       bind:value={brightnessValue}
-      min="0"
-      max="3"
-      step="0.01"
+      min="-100"
+      max="100"
+      step="1"
     />
   </div>
-  <button class="row col primary button" on:click={handleClick}> Reset </button>
 </div>
 
 <style>

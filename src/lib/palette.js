@@ -3,40 +3,57 @@ import Color from "colorjs.io";
 const colorthief = new ColorThief();
 
 class ColorPalette {
-  constructor() {
+  constructor(colors) {
     this.colors = [];
-    this.size = 0;
+    this.originalColors = [];
   }
-  fill(imageURL, size) {}
 
-  //   create(imageURL, number) {
-  //     //convert imageUrl to image for thief
-  //     let img = new Image();
+  fill(colors) {
+    this.colors = colors;
+    this.originalColors = [...colors];
+  }
 
-  //     img.crossOrigin = "Anonymous";
-  //     img.src = imageURL;
-
-  //     img.addEventListener("load", () => {
-  //       this.createPalette(img, number);
-  //     });
-  //     return this.colors;
-  //   }
-
-  createPalette(img, number) {
-    colorthief.getPalette(img, number).forEach((c) => {
-      this.colors.push(new Color("srgb", [c[0] / 255, c[1] / 255, c[2] / 255]));
+  adjust(hue, sat, light) {
+    this.originalColors.forEach((c, index) => {
+      let color = new Color("hsl", [
+        c.hsl.h + hue,
+        c.hsl.s + sat,
+        c.hsl.l + light,
+      ]);
+      this.colors[index] = color;
     });
   }
-
-  saturate(saturationValue) {
-    this.colors.forEach((color, index) => {
-      console.log(this.colors[index].hsv.v);
-      this.colors[index].hsv.s *= saturationValue;
+  getMid() {
+    let p = new ColorPalette();
+    this.colors.forEach((color, i) => {
+      let c = new Color(color);
+      c.hsl.h += -6;
+      c.hsl.s *= 1.16;
+      c.hsl.l *= 0.5;
+      p.colors.push(c);
     });
+    return p;
   }
 
-  callName() {
-    console.log("name");
+  getDark() {
+    let p = new ColorPalette();
+    this.colors.forEach((color, i) => {
+      let c = new Color(color);
+      c.hsl.h += 6;
+      c.hsl.s *= 1.16;
+      c.hsl.l *= 0.2;
+      p.colors.push(c);
+    });
+    return p;
+  }
+
+  reset() {
+    this.colors = [...this.originalColors];
+  }
+
+  //clone
+  clone() {
+    return new ColorPalette(this.colors);
   }
 }
 

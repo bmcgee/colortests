@@ -5,58 +5,88 @@
   import { skintone, contrast } from "./colortests";
 </script>
 
-<div
-  class="colorchip col card text-left text-white"
-  style="--color: {color.toString()}"
->
-  <div class="row">
-    <!-- <div class="col col-1 is-left text-left">{index + 1}</div> -->
-    <div class="overflow text-left float-left col">
-      {color.to("srgb").toString({
-        precision: 2,
-        format: {
-          name: "RGB",
-          coords: ["<number>[0, 255]", "<number>[0, 255]", "<number>[0, 255]"],
-        },
-      })}
-      <br />
-
-      {color.to("hsv").toString({
-        precision: 3,
-
-        format: {
-          name: "HSV",
-          coords: ["<number>", "<number>", "<number>"],
-        },
-      })}
-      <br />
+<div class="container">
+  <div class="row is-vertical-align">
+    <!-- Color Info -->
+    <div class="col-4 text-size text-left">
+      H: {color.hsl.h.toPrecision(3)} <br />
+      S: {color.hsl.s.toPrecision(3)} <br />
+      L: {color.hsl.l.toPrecision(3)} <br />
       {color.to("srgb").toString({ format: "hex" })}
     </div>
-    <!-- <div class="col is-right is-vertical-align">
-        {#if skintone(color)}
-          <div class="secondary">Skin?</div>
+
+    <!-- Color Dot -->
+    <div
+      class="col-8 text-white is-center is-vertical-align chip"
+      style="--color: {color.toString()}"
+    >
+      <div class="row is-vertical-align">
+        <p class="col text-large">Aa</p>
+        {#if contrast(color)}
+          <div class="text-medium col error is-center">
+            {color.contrastWCAG21("white").toFixed(1)}&nbsp;
+            <img
+              src="https://icongr.am/material/alert-circle-outline.svg?size=25&color=ffffff"
+            />
+          </div>
+        {:else if !contrast(color)}
+          <div class="text-medium col success is-center">
+            {color.contrastWCAG21("white").toFixed(1)}
+          </div>
         {/if}
-      </div> -->
-    <div class="col-1 is-right">
-      {#if contrast(color)}
-        <div class="error">
-          {color.contrastWCAG21("white").toFixed(1)}
-        </div>
-      {:else if !contrast(color)}
-        <div class="success">
-          {color.contrastWCAG21("white").toFixed(1)}
-        </div>
-      {/if}
+      </div>
     </div>
+
+    <!-- Tests -->
+    <!-- <div class="col-3">
+      <div class="row">
+        {#if skintone(color)}
+          <div class="button secondary">Skin?</div>
+        {/if}
+      </div>
+      <div class="row">
+        {#if contrast(color)}
+          <div class="button error">
+            {color.contrastWCAG21("white").toFixed(1)}
+          </div>
+        {:else if !contrast(color)}
+          <div class="button success">
+            {color.contrastWCAG21("white").toFixed(1)}
+          </div>
+        {/if}
+      </div>
+    </div>
+     -->
   </div>
 </div>
 
 <style>
-  .colorchip {
-    box-shadow: none;
+  .chip {
     background-color: var(--color);
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 0.5em;
+  }
+  .button {
+    /* padding: 1em; */
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    aspect-ratio: 1;
+    text-align: center;
+  }
+  .text-size {
+    font-size: 1.2em;
+    line-height: 1.2em;
   }
   .overflow {
     text-overflow: ellipsis;
+  }
+  .text-large {
+    font-size: 3em;
+    font-weight: bold;
+  }
+  .text-medium {
+    font-size: 1.5em;
   }
 </style>

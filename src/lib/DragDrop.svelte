@@ -2,19 +2,20 @@
   import Controls from "./Controls.svelte";
 
   import ColorThief from "colorthief";
+  import Color from "colorjs.io";
+
   import PaletteDisplay from "./PaletteDisplay.svelte";
   import { ColorPalette } from "./palette";
   import { sortPalette } from "./colortests";
   const colorThief = new ColorThief();
-  import { mid, dark } from "./colortests";
+  import PaletteTable from "./PaletteTable.svelte";
 
-  let upImage, fileinput;
-  let palette = new ColorPalette();
-  let secondPalette = new ColorPalette();
+  let palette = new ColorPalette([]);
+  let secondPalette = new ColorPalette([]);
   let sortedPalettes = [];
 
   let token =
-    "Features125/v4/0e/10/96/0e10963d-8c5d-f176-3651-796ec44d0c97/mzl.kdlmyecx.jpg";
+    "Features115/v4/17/54/32/1754321f-4d10-0445-8c63-63b9aca63241/mza_5881696461253841876.png";
 
   let url;
   let loaded = false;
@@ -23,27 +24,6 @@
   let hueValue = 0;
   let saturationValue = 1;
   let brightnessValue = 1;
-
-  function sat(saturationValue) {
-    palette.colors.forEach((color, i) => {
-      secondPalette.colors[i].hsv.s = palette.colors[i].hsv.s * saturationValue;
-    });
-    secondPalette = secondPalette;
-  }
-
-  function bright(brightnessValue) {
-    palette.colors.forEach((color, i) => {
-      secondPalette.colors[i].hsv.v = palette.colors[i].hsv.v * brightnessValue;
-    });
-    secondPalette = secondPalette;
-  }
-
-  function hue(hueValue) {
-    palette.colors.forEach((color, i) => {
-      secondPalette.colors[i].hsv.h = palette.colors[i].hsv.h + hueValue;
-    });
-    secondPalette = secondPalette;
-  }
 
   function handleClick() {
     if (token.startsWith("http")) {
@@ -54,17 +34,19 @@
     }
     displayImage.src = url;
 
-    // palette = palette.fill();
-    // secondPalette = secondPalette.fill();
-
     const img = new Image();
     img.src = url;
     img.crossOrigin = "Anonymous";
     img
       .decode()
       .then(() => {
-        palette.createPalette(img, 10);
-        secondPalette.createPalette(img, 10);
+        let colors = [];
+        colorThief.getPalette(img, 2).forEach((c) => {
+          colors.push(new Color("srgb", [c[0] / 255, c[1] / 255, c[2] / 255]));
+        });
+
+        palette.fill(colors);
+        secondPalette = palette.clone();
         sortedPalettes = sortPalette(palette);
         loaded = true;
       })
@@ -75,12 +57,19 @@
     //Sort Palettes
     sortedPalettes = sortPalette(secondPalette);
   }
-  $: hue(hueValue);
-  $: sortedPalettes = sortPalette(secondPalette);
-  $: sat(saturationValue);
-  $: sortedPalettes = sortPalette(secondPalette);
-  $: bright(brightnessValue);
-  $: sortedPalettes = sortPalette(secondPalette);
+
+  function adjustPalettes(hueValue, saturationValue, brightnessValue) {
+    palette.adjust(hueValue, saturationValue, brightnessValue);
+    palette = palette;
+  }
+  function resetPalette() {
+    hueValue = 0;
+    saturationValue = 0;
+    brightnessValue = 0;
+    adjustPalettes();
+  }
+
+  $: adjustPalettes(hueValue, saturationValue, brightnessValue);
 </script>
 
 <div class="container" id="loader">
@@ -96,6 +85,9 @@
     {#if loaded}
       <div class="col-6 clearfix float-right">
         <Controls bind:saturationValue bind:brightnessValue bind:hueValue />
+        <button class="row col primary button" on:click={resetPalette}>
+          Reset
+        </button>
       </div>
     {/if}
   </div>
@@ -104,33 +96,24 @@
 {#if loaded}
   <div class="container" id="palettes">
     <div class="row bubba">
-      <div class="col-3">
+      <div class="col">
         <p class="text-left">Color Thief Palette:</p>
         <hr />
-        <PaletteDisplay {palette} flags={false} />
+        <PaletteDisplay {palette} flags={true} />
       </div>
+
       <div class="col">
-        <p class="text-left">Acceptable:</p>
-        <hr />
-        <PaletteDisplay palette={sortedPalettes[2]} />
-        <p class="text-left">Low Contrast:</p>
-        <hr />
-        <PaletteDisplay palette={sortedPalettes[1]} />
-        <p class="text-left">Skintone?</p>
-        <hr />
-        <PaletteDisplay palette={sortedPalettes[0]} />
-      </div>
-      <div class="col-3">
         <p class="text-left">Midtone</p>
         <hr />
-        <PaletteDisplay palette={mid(sortedPalettes[2])} flags={false} />
+        <PaletteDisplay palette={palette.getMid()} flags={true} />
       </div>
-      <div class="col-3">
+      <div class="col">
         <p class="text-left">Dark</p>
         <hr />
-        <PaletteDisplay palette={dark(sortedPalettes[2])} flags={false} />
+        <PaletteDisplay palette={palette.getDark()} flags={true} />
       </div>
     </div>
+    <PaletteTable {palette} />
   </div>
 {/if}
 

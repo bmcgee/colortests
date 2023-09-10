@@ -39,7 +39,7 @@ export let sortPalette = (palette) => {
 
   for (let color of palette.colors) {
     if (skintone(color)) {
-      skinTones.colors.push(color);
+      // skinTones.colors.push(color);
     } else if (contrast(color)) {
       lowContrast.colors.push(color);
     } else {
@@ -49,32 +49,18 @@ export let sortPalette = (palette) => {
   return [skinTones, lowContrast, safe];
 };
 
-export let mid = (palette) => {
-  let p = new ColorPalette();
-  palette.colors.forEach((color, i) => {
-    //create midtone
-    let c = new Color(color);
-    c.hsv.s *= 1.06;
-    c.hsv.h += -6;
-    c.hsv.v *= 0.5;
-
-    //push to palette
-    p.colors.push(c);
-  });
-  return p;
+export let midtone = (color) => {
+  let c = new Color(color);
+  c.hsl.h += -6;
+  c.hsl.s *= 1.16;
+  c.hsl.l *= 0.5;
+  return c;
 };
 
-export let dark = (palette) => {
-  let p = new ColorPalette();
-  palette.colors.forEach((color, i) => {
-    //create dark color
-    let c = new Color(color);
-    c.hsv.s *= 1.06;
-    c.hsv.h += 6;
-    c.hsv.v *= 0.25;
-
-    //push to palette
-    p.colors.push(c);
-  });
-  return p;
+export let darktone = (color) => {
+  let c = new Color(color);
+  c.hsl.h += 6;
+  c.hsl.s *= 1.16;
+  c.hsl.l *= 0.2;
+  return c;
 };
