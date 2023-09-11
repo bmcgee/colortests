@@ -2,14 +2,22 @@
   export let color;
 </script>
 
-<div class="dot is-rounded" style="--color: {color.toString()}">Aa</div>
+<div
+  class="dot is-rounded is-vertical-align is-center text-white"
+  style="--color: {color.toString()}"
+>
+  Aa
+</div>
 
 <style>
   .dot {
     background-color: var(--color);
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    border-radius: 0.5em;
+    /* padding: 0;
+    margin: 0; */
+    /* border-radius: 10em; */
+    aspect-ratio: 1;
+  }
+  div {
+    font-size: 3em;
   }
 </style>

@@ -9,6 +9,7 @@
   import { sortPalette } from "./colortests";
   const colorThief = new ColorThief();
   import PaletteTable from "./PaletteTable.svelte";
+  import ColorChip from "./ColorChip.svelte";
 
   let palette = new ColorPalette([]);
   let secondPalette = new ColorPalette([]);
@@ -81,7 +82,7 @@
 
 <div class="container" id="image and controls">
   <div class="row">
-    <img class="col-4" bind:this={displayImage} src="" />
+    <img id="mainImage" class="col-4" bind:this={displayImage} src="" />
     {#if loaded}
       <div class="col-6 clearfix float-right">
         <Controls bind:saturationValue bind:brightnessValue bind:hueValue />
@@ -94,27 +95,7 @@
 </div>
 
 {#if loaded}
-  <div class="container" id="palettes">
-    <div class="row bubba">
-      <div class="col">
-        <p class="text-left">Color Thief Palette:</p>
-        <hr />
-        <PaletteDisplay {palette} flags={true} />
-      </div>
-
-      <div class="col">
-        <p class="text-left">Midtone</p>
-        <hr />
-        <PaletteDisplay palette={palette.getMid()} flags={true} />
-      </div>
-      <div class="col">
-        <p class="text-left">Dark</p>
-        <hr />
-        <PaletteDisplay palette={palette.getDark()} flags={true} />
-      </div>
-    </div>
-    <PaletteTable {palette} />
-  </div>
+  <PaletteDisplay {palette} />
 {/if}
 
 <style>
