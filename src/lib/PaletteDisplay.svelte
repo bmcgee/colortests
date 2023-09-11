@@ -7,12 +7,13 @@
   export let flags = true;
 
   import { darktone, midtone } from "./colortests";
+  import SVG from "./SVG.svelte";
 
   let noGood = false;
 </script>
 
 {#each palette.colors as color}
-  <div class="container" id="palettes">
+  <div class="container is-full-width" id="palettes">
     <div class="row">
       <div class="col-2">
         <ColorChip {color} />
@@ -23,11 +24,13 @@
       <div class="col-2">
         <ColorChip color={darktone(color)} />
       </div>
-      <div class="col-1" />
-
-      <div class="col-5">
-        <Gradient {color} />
+      <div class="col-4">
+        <SVG {color} />
       </div>
+
+      <!-- <div class="col-1">
+        <Gradient {color} />
+      </div> -->
     </div>
   </div>
 {/each}

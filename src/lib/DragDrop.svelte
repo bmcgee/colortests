@@ -75,7 +75,7 @@
   </div>
 </div>
 
-<div class="container" id="controls">
+<div class="container is-full-width" id="controls">
   <div class="row">
     <div class="col-4">
       <img id="mainImage" bind:this={displayImage} src="" />

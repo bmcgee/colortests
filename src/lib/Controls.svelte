@@ -6,7 +6,7 @@
   export function handleClick() {}
 </script>
 
-<div class="containeris-full-width" id="controls">
+<div class="container is-full-width" id="controls">
   <form class="text-left">
     <p class="row grouped is-vertical-align">
       <label class="col-1" for="hue_val">Hue</label>
