@@ -4,12 +4,18 @@
 
   export let color;
 
-  let skin = skintone(color);
+  let skin = false;
   let wcag = false;
 
-  if (color.contrastWCAG21("white") >= 4.5) {
+  $: if (color.contrastWCAG21("white") >= 4.5) {
     wcag = true;
   }
+  $: if (skintone(color) == true) {
+    skin = true;
+  } else {
+    skin = false;
+  }
+  $: skin = skin;
 </script>
 
 <table class="striped mono">
