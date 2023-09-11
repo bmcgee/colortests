@@ -9,7 +9,6 @@
 
   if (color.contrastWCAG21("white") >= 4.5) {
     wcag = true;
-    console.log("true");
   }
 </script>
 
@@ -25,14 +24,14 @@
   </tr>
   <tr>
     <td>
-      <!-- <img
+      <img
         class:skin
         src="https://icongr.am/clarity/avatar.svg?size=20&color=000000"
       />
       <img
         class:wcag
         src="https://icongr.am/clarity/check-circle.svg?size=20&color=000000"
-      /> -->
+      />
     </td>
     <td class="" colspan="">{color.to("srgb").toString({ format: "hex" })}</td>
   </tr>

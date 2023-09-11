@@ -7,13 +7,10 @@
   import PaletteDisplay from "./PaletteDisplay.svelte";
   import { ColorPalette } from "./palette";
   import { sortPalette } from "./colortests";
+
   const colorThief = new ColorThief();
-  import PaletteTable from "./PaletteTable.svelte";
-  import ColorChip from "./ColorChip.svelte";
 
   let palette = new ColorPalette([]);
-  let secondPalette = new ColorPalette([]);
-  let sortedPalettes = [];
 
   let token =
     "Features115/v4/17/54/32/1754321f-4d10-0445-8c63-63b9aca63241/mza_5881696461253841876.png";
@@ -42,13 +39,12 @@
       .decode()
       .then(() => {
         let colors = [];
-        colorThief.getPalette(img, 2).forEach((c) => {
-          colors.push(new Color("srgb", [c[0] / 255, c[1] / 255, c[2] / 255]));
-        });
-
+        // colorThief.getPalette(img, 10).forEach((c) => {
+        //   colors.push(new Color("srgb", [c[0] / 255, c[1] / 255, c[2] / 255]));
+        // });
+        let c = colorThief.getColor(img, 5);
+        colors.push(new Color("srgb", [c[0] / 255, c[1] / 255, c[2] / 255]));
         palette.fill(colors);
-        secondPalette = palette.clone();
-        sortedPalettes = sortPalette(palette);
         loaded = true;
       })
       .catch((encodingError) => {
@@ -56,7 +52,6 @@
       });
 
     //Sort Palettes
-    sortedPalettes = sortPalette(secondPalette);
   }
 
   function adjustPalettes(hueValue, saturationValue, brightnessValue) {
@@ -75,28 +70,34 @@
 
 <div class="container" id="loader">
   <div class="row">
-    <input class="col" bind:value={token} />
-    <button class="col" on:click={handleClick}> Load </button>
+    <input class="col-8" bind:value={token} />
+    <button class="col-4" on:click={handleClick}> Load </button>
   </div>
 </div>
 
-<div class="container" id="image and controls">
+<div class="container" id="controls">
   <div class="row">
-    <img id="mainImage" class="col-4" bind:this={displayImage} src="" />
-    {#if loaded}
-      <div class="col-6 clearfix float-right">
-        <Controls bind:saturationValue bind:brightnessValue bind:hueValue />
-        <button class="row col primary button" on:click={resetPalette}>
-          Reset
-        </button>
-      </div>
-    {/if}
+    <div class="col-4">
+      <img id="mainImage" bind:this={displayImage} src="" />
+    </div>
+    <div class="col-8">
+      <Controls bind:saturationValue bind:brightnessValue bind:hueValue />
+      <button class="row is-right primary button" on:click={resetPalette}>
+        Reset HSL
+      </button>
+    </div>
   </div>
 </div>
-
 {#if loaded}
   <PaletteDisplay {palette} />
 {/if}
 
 <style>
+  #controls {
+    border-bottom: 1px solid var(--color-lightGrey);
+  }
+  img {
+    border-radius: calc(var(--grid-gutter) / 6);
+    width: 100%;
+  }
 </style>
