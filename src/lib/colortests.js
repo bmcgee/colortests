@@ -52,7 +52,7 @@ export let sortPalette = (palette) => {
 export let midtone = (color) => {
   let c = new Color(color);
   c.hsl.h += -6;
-  c.hsl.s *= 1.16;
+  c.hsl.s += 16;
   c.hsl.l *= 0.5;
   return c;
 };
@@ -60,7 +60,7 @@ export let midtone = (color) => {
 export let darktone = (color) => {
   let c = new Color(color);
   c.hsl.h += 6;
-  c.hsl.s *= 1.16;
+  c.hsl.s += 16;
   c.hsl.l *= 0.2;
   return c;
 };
